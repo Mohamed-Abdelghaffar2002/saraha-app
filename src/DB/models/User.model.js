@@ -20,7 +20,7 @@ const userSchema = new mongoose.Schema(
     email: {
       type: String,
       trim: true,
-      unique: true,
+      // unique: true,
       required: function () {
         if (this.phone) {
           return false;
@@ -36,11 +36,12 @@ const userSchema = new mongoose.Schema(
       type: String,
       enum: Object.values(genderEnum),
       default: "male",
+      required: true,
     },
     phone: {
       type: String,
       trim: true,
-      unique: true,
+      // unique: true,
       required: function () {
         if (this.email) {
           return false;
@@ -70,7 +71,7 @@ userSchema
   .virtual("fullName")
   .set(function (value) {
     const fullName = value?.split(" ") || [];
-    this.set({ firstName: fullName[0], lastName: fullName[-1] });
+    this.set({ firstName: fullName[0], lastName: fullName[1] });
   })
   .get(function () {
     return `${this.firstName} ${this.lastName}`;
