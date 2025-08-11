@@ -17,5 +17,5 @@ export const successResponse = ({
 };
 
 export const globalErrorHandler = (error, req, res, next) => {
-  res.status(error.cause || 500).json({ message: error.message });
+  res.status(error.cause || 500).json({ message: error.message,error,stack:error.stack });
 };

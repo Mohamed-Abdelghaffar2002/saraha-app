@@ -52,8 +52,17 @@ const userSchema = new mongoose.Schema(
     DOB: {
       type: Date,
     },
-    confirmEmail: {
+    otp: {
+      type: Number,
+      default: null,
+    },
+    otpExpireDate: {
       type: Date,
+      default: null,
+    },
+    isEmailVerified: {
+      type: Boolean,
+      default: false,
     },
   },
   {
