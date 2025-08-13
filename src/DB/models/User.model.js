@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 
 export let genderEnum = { male: "male", female: "female" };
+export let userAgentEnum = { local: "local", google: "google" };
 const userSchema = new mongoose.Schema(
   {
     firstName: {
@@ -30,7 +31,12 @@ const userSchema = new mongoose.Schema(
     },
     password: {
       type: String,
-      required: true,
+      required: function () {
+        if (this.userAgent === "google") {
+          return false;
+        }
+        return true;
+      },
     },
     gender: {
       type: String,
@@ -52,13 +58,19 @@ const userSchema = new mongoose.Schema(
     DOB: {
       type: Date,
     },
+    userAgent: {
+      type: String,
+      enum: Object.values(userAgentEnum),
+      default: "local",
+      required: true,
+    },
     otp: {
       type: Number,
-      default: null,
+      default: undefined,
     },
     otpExpireDate: {
       type: Date,
-      default: null,
+      default: undefined,
     },
     isEmailVerified: {
       type: Boolean,

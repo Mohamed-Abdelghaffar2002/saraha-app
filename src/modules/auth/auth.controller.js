@@ -1,9 +1,14 @@
 import Router from "express";
 import * as authServices from "./auth.service.js";
+import { asyncHandler } from "../../utils/response/index.js";
+import { validation } from "../../middleware/validation.middleware.js";
+import { loginSchema, signupSchema, googleLoginSchema } from "./auth.validation.js";
 const router = Router();
-router.post("/signup", authServices.signup);
-router.post("/verify-account", authServices.verifyEmail);
-router.post("/resend-otp", authServices.resendOtp);
-router.post("/login", authServices.login);
-
+router.post("/signup",validation(signupSchema),asyncHandler(authServices.signup));
+router.post("/login",validation(loginSchema),asyncHandler(authServices.login));
+router.post("/google-login",validation(googleLoginSchema),asyncHandler(authServices.googleLogin));
+router.post("/verify-account",asyncHandler(authServices.verifyEmail));
+router.post("/resend-otp",asyncHandler(authServices.resendOtp));
+router.get("/refresh-token",asyncHandler(authServices.refreshToken));
+router.patch("/update-password",asyncHandler(authServices.updatePassword));
 export default router;
