@@ -191,7 +191,10 @@ export const refreshToken = async (req, res, next) => {
     return res.status(401).json({ message: "Authorization header missing" });
   }
   const data = verifyToken(authorization);
-  console.log(data);
+  const user = await UserModel.findById(data.id);
+  if (!user) {
+    throw new Error("User not found", { cause: 404 });
+  }
   const { access_token, refresh_token } = generateToken({ id:data.id});
   successResponse({
     res,
